@@ -1,4 +1,5 @@
-import csv
+import csv, sys
+import pandas as pd
 
 def convert_scientific_to_real(number_str):
     try:
@@ -17,10 +18,21 @@ def convert_csv_to_real_numbers(input_csv, output_csv):
         writer = csv.writer(outfile)
         
         for row in reader:
-            converted_row = [convert_scientific_to_real(cell) for cell in row]
+            converted_row = [convert_scientific_to_real(cell) for cell in row] 
             writer.writerow(converted_row)
 
-# Example usage:
-input_csv = 'y9_10_2one.csv'  # Change this to the name of your input CSV file
-output_csv = 'y9_10_2twoa.csv'  # Change this to the name of the output CSV file
-convert_csv_to_real_numbers(input_csv, output_csv)
+
+
+def remove_scientific_notation(path:str)-> None:
+    df = pd.read_csv(path)
+    df.to_csv(path)
+
+
+if __name__ == "__main__":
+    args = sys.argv
+    if len(args)<3:
+        # Example usage:
+        input_csv = 'test.csv'  # Change this to the name of your input CSV file
+    else:
+        input_csv = args[-1] 
+    remove_scientific_notation(input_csv)
